@@ -21,13 +21,18 @@ public class VoterController {
      */
     @RequestMapping(path = "/voter", method = RequestMethod.POST)
     public ResponseEntity<VoterInfo> voter(@RequestBody VoterLogin voterLogin) {
+        // find the voter
         Voter voter = PersistenceServiceImpl.getInstance().getVoterDao().getByEmail(voterLogin.getLogin());
 
+        // if the voter doesn't exist
         if (voter == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        if (!voter.getPassword().equals(voterLogin.getPassword()))
+
+        // if the password is wrong
+        if (!voter.checkPassword(voterLogin.getPassword()))
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
+        // create the DTO for the respond
         VoterInfo output = new VoterInfo(voter.getEmail());
 
         return new ResponseEntity<>(output, HttpStatus.OK);
