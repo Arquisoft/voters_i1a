@@ -14,12 +14,12 @@ public class MockVoterDao implements VoterDao {
 
     @Override
     public Voter getByEmail(String email) {
-        return new Voter(1, email, "abcd1234");
+        return new Voter(1, "12345678A", "John", email, "abcd1234", "12345");
     }
 
     @Override
     public Voter getById(long id) {
-        return new Voter(id, "email@gmail.com", "1234abcd");
+        return new Voter(id, "87654321B", "Smith", "smith@voters.com", "1234abcd", "54321");
     }
 
     @Override

@@ -33,7 +33,7 @@ public class VoterController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         // create the DTO for the respond
-        VoterInfo output = new VoterInfo(voter.getEmail());
+        VoterInfo output = VoterInfo.fromModel(voter);
 
         return new ResponseEntity<>(output, HttpStatus.OK);
     }
