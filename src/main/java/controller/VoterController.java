@@ -22,7 +22,7 @@ public class VoterController {
     @RequestMapping(path = "/voter", method = RequestMethod.POST)
     public ResponseEntity<VoterInfo> voter(@RequestBody VoterLogin voterLogin) {
         // find the voter
-        Voter voter = PersistenceServiceImpl.getInstance().getVoterDao().getByEmail(voterLogin.getLogin());
+        Voter voter = PersistenceServiceImpl.getInstance().getVoterDao().getByEmail(voterLogin.getEmail());
 
         // if the voter doesn't exist
         if (voter == null)
