@@ -60,6 +60,37 @@ public class JDBCVoterDao implements VoterDao {
             throw new RuntimeException(e);
         }
     }
+    
+    @Override
+    public Voter getByEmailAndPassword(String email, String password) {
+    	String sql = "SELECT id, name, nif, email, password, pollingstationcode FROM Users WHERE email = ? AND password = ?";
+        
+    	try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, email);
+            statement.setString(2, password);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (!resultSet.next())
+                return null;
+
+            Voter voter = new Voter(
+                    resultSet.getLong("id"),
+                    resultSet.getString("nif"),
+                    resultSet.getString("name"),
+                    resultSet.getString("email"),
+                    resultSet.getString("password"),
+                    resultSet.getString("pollingstationcode"));
+
+            resultSet.close();
+
+            return voter;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public Voter getById(long id) {
