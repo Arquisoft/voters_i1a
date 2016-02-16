@@ -1,7 +1,9 @@
 package controller;
 
+import dao.VoterDao;
 import dto.VoterInfo;
 import dto.VoterLogin;
+import dto.VoterPasswordUpdate;
 import model.Voter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,7 @@ public class VoterController {
      * data about the voter
      * @return Voter
      */
-    @RequestMapping(path = "/voter", method = RequestMethod.POST)
+    @RequestMapping(path = "/voter/get_info", method = RequestMethod.POST)
     public ResponseEntity<VoterInfo> voter(@RequestBody VoterLogin voterLogin) {
         // find the voter
         Voter voter = PersistenceServiceImpl.getInstance().getVoterDao().getByEmail(voterLogin.getEmail());
@@ -27,15 +29,37 @@ public class VoterController {
         // if the voter doesn't exist
         if (voter == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
         // if the password is wrong
         if (!voter.checkPassword(voterLogin.getPassword()))
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        // create the DTO for the respond
+        // create the DTO for the response
         VoterInfo output = VoterInfo.fromModel(voter);
 
         return new ResponseEntity<>(output, HttpStatus.OK);
+    }
+
+    /**
+     * Update a voter password
+     * @param passwordUpdate DTO with the information to update the password
+     * @return Http status code
+     */
+    @RequestMapping(path = "/voter/change_password", method = RequestMethod.POST)
+    public HttpStatus updatePassword(@RequestBody VoterPasswordUpdate passwordUpdate) {
+        VoterDao dao = PersistenceServiceImpl.getInstance().getVoterDao();
+
+        Voter voter = dao.getByEmail(passwordUpdate.getEmail());
+
+        if (voter == null)
+            return HttpStatus.NOT_FOUND;
+        if (!voter.checkPassword(passwordUpdate.getOldPassword()))
+            return HttpStatus.FORBIDDEN;
+
+        voter.setPassword(passwordUpdate.getNewPassword());
+
+        dao.updateVoter(voter);
+
+        return HttpStatus.OK;
     }
 
 }
