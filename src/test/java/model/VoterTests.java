@@ -32,17 +32,17 @@ public class VoterTests {
     @Test
     public void testEncryption() {
         Voter voter2 = new Voter(2, "01234567A", "Voter2", "voter2@asw.es", PASSWORD, "PSC02");
-        assertFalse(voter2.getPassword().equals(PASSWORD));
+        assertFalse(voter2.getHashedPassword().equals(PASSWORD));
     }
 
     @Test
     public void changePassword() {
         Voter voter2 = new Voter(2, "01234567A", "Voter2", "voter2@asw.es", PASSWORD, "PSC02");
-        String hashed = voter2.getPassword();
+        String hashed = voter2.getHashedPassword();
 
         voter2.setPassword("different");
 
-        assertFalse(hashed.equals(voter2.getPassword()));
+        assertFalse(hashed.equals(voter2.getHashedPassword()));
         assertFalse(voter2.checkPassword(PASSWORD));
     }
 

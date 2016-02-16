@@ -14,6 +14,8 @@ public class Voter {
     private String name;
     private String password;
 
+    private String hashedPassword;
+
     private String pollingStationCode;
 
     public Voter(long id, String nif, String name, String email, String password, String pollingStationCode) {
@@ -21,8 +23,14 @@ public class Voter {
         this.nif = nif;
         this.email = email;
         this.name = name;
-		setPassword(password);
+        this.password = password;
+        hashPassword(password);
         this.pollingStationCode = pollingStationCode;
+    }
+
+    private void hashPassword(String password) {
+        String salt = BCrypt.gensalt(12);
+        this.hashedPassword = BCrypt.hashpw(password, salt);
     }
 
     /**
@@ -31,7 +39,7 @@ public class Voter {
      * @return True when it does. False otherwise
      */
     public boolean checkPassword(String password) {
-        return BCrypt.checkpw(password, this.password);
+        return BCrypt.checkpw(password, this.hashedPassword);
     }
 
     public String getNif() {
@@ -48,6 +56,10 @@ public class Voter {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
     }
 
     public String getPollingStationCode() {
@@ -70,12 +82,13 @@ public class Voter {
         this.name = name;
     }
 
-    /**
-     * Encrypt the password
-     */
     public void setPassword(String password) {
-        String salt = BCrypt.gensalt(12);
-        this.password = BCrypt.hashpw(password, salt);
+        this.password = password;
+        this.hashPassword(password);
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
     }
 
     public void setPollingStationCode(String pollingStationCode) {
