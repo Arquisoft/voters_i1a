@@ -1,5 +1,7 @@
 package model;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 /**
  * Represents a voter
  */
@@ -19,7 +21,7 @@ public class Voter {
         this.nif = nif;
         this.email = email;
         this.name = name;
-        this.password = password;
+		setPassword(password);
         this.pollingStationCode = pollingStationCode;
     }
 
@@ -29,7 +31,7 @@ public class Voter {
      * @return True when it does. False otherwise
      */
     public boolean checkPassword(String password) {
-        return this.password.equals(password);
+        return BCrypt.checkpw(password, this.password);
     }
 
     public String getNif() {
@@ -68,8 +70,12 @@ public class Voter {
         this.name = name;
     }
 
+    /**
+     * Encrypt the password
+     */
     public void setPassword(String password) {
-        this.password = password;
+        String salt = BCrypt.gensalt(12);
+        this.password = BCrypt.hashpw(password, salt);
     }
 
     public void setPollingStationCode(String pollingStationCode) {
