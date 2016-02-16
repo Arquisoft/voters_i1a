@@ -1,5 +1,6 @@
 package service;
 
+import dao.JDBCVoterDao;
 import dao.MockVoterDao;
 import dao.VoterDao;
 
@@ -21,7 +22,7 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     @Override
     public VoterDao getVoterDao() {
-        return new MockVoterDao();
+        return new JDBCVoterDao();
     }
 
 }

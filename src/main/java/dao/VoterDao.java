@@ -25,6 +25,8 @@ public interface VoterDao {
      * @return Instance of voter. Null if not found
      */
     Voter getByEmail(String email);
+    
+    Voter getByEmailAndPassword(String email, String password);
 
     /**
      * Get a voter by his id.
