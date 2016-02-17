@@ -49,8 +49,10 @@ public class JDBCVoterDao implements VoterDao {
                     resultSet.getString("nif"),
                     resultSet.getString("name"),
                     resultSet.getString("email"),
-                    resultSet.getString("password"),
+                    "",
                     resultSet.getString("pollingstationcode"));
+
+            voter.setHashedPassword(resultSet.getString("password"));
 
             resultSet.close();
 
@@ -111,7 +113,7 @@ public class JDBCVoterDao implements VoterDao {
             statement.setString(1, voter.getNif());
             statement.setString(2, voter.getName());
             statement.setString(3, voter.getEmail());
-            statement.setString(4, voter.getPassword());
+            statement.setString(4, voter.getHashedPassword());
             statement.setString(5, voter.getPollingStationCode());
             statement.setLong(6, voter.getId());
 
