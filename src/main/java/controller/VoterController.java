@@ -22,7 +22,9 @@ public class VoterController {
      * data about the voter
      * @return Voter
      */
-    @RequestMapping(path = "/voter/get_info", method = RequestMethod.POST)
+    @RequestMapping(path = "/voter/get_info", method = RequestMethod.POST, 
+			headers ="Accept=application/json",
+    		produces = "application/json")
     public ResponseEntity<VoterInfo> voter(@RequestBody VoterLogin voterLogin) {
         // find the voter
         Voter voter = ServicesFactory.getPersistenceService().getVoterDao().getByEmail(voterLogin.getEmail());
@@ -45,7 +47,9 @@ public class VoterController {
      * @param passwordUpdate DTO with the information to update the password
      * @return Http status code
      */
-    @RequestMapping(path = "/voter/change_password", method = RequestMethod.POST)
+    @RequestMapping(path = "/voter/change_password", method = RequestMethod.POST,
+			headers ="Accept=application/json",
+    		produces = "application/json")
     public HttpStatus updatePassword(@RequestBody VoterPasswordUpdate passwordUpdate) {
         VoterDao dao = ServicesFactory.getPersistenceService().getVoterDao();
 
