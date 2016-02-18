@@ -13,7 +13,7 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     private PersistenceServiceImpl() {} // cannot be instantiated by outside
 
-    public static PersistenceServiceImpl getInstance() {
+    static PersistenceServiceImpl getInstance() {
         if (instance == null)
             instance = new PersistenceServiceImpl();
 

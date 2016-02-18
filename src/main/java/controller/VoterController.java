@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import service.PersistenceServiceImpl;
+import service.ServicesFactory;
 
 /**
  * Controller for the Voter
@@ -24,7 +25,7 @@ public class VoterController {
     @RequestMapping(path = "/voter/get_info", method = RequestMethod.POST)
     public ResponseEntity<VoterInfo> voter(@RequestBody VoterLogin voterLogin) {
         // find the voter
-        Voter voter = PersistenceServiceImpl.getInstance().getVoterDao().getByEmail(voterLogin.getEmail());
+        Voter voter = ServicesFactory.getPersistenceService().getVoterDao().getByEmail(voterLogin.getEmail());
 
         // if the voter doesn't exist
         if (voter == null)
@@ -46,7 +47,7 @@ public class VoterController {
      */
     @RequestMapping(path = "/voter/change_password", method = RequestMethod.POST)
     public HttpStatus updatePassword(@RequestBody VoterPasswordUpdate passwordUpdate) {
-        VoterDao dao = PersistenceServiceImpl.getInstance().getVoterDao();
+        VoterDao dao = ServicesFactory.getPersistenceService().getVoterDao();
 
         Voter voter = dao.getByEmail(passwordUpdate.getEmail());
 
@@ -56,7 +57,6 @@ public class VoterController {
             return HttpStatus.FORBIDDEN;
 
         voter.setPassword(passwordUpdate.getNewPassword());
-
         dao.updateVoter(voter);
 
         return HttpStatus.OK;
