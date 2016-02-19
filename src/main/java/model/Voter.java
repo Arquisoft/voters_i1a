@@ -18,6 +18,8 @@ public class Voter {
 
     private String pollingStationCode;
 
+    public Voter() {}
+
     public Voter(long id, String nif, String name, String email, String password, String pollingStationCode) {
         this.id = id;
         this.nif = nif;

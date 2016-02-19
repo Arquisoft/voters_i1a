@@ -5,8 +5,12 @@
         <title>Your information</title>
     </head>
     <body>
-        Your email: <span th:text="${email}"></span>
+        <section>
+            Your email: <span th:text="${voter.email}"></span>
+        </section>
 
-
+        <section>
+            <a th:href="${'/update_password/' + voter.id}">Change your password</a>
+        </section>
     </body>
 </html>

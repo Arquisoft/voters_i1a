@@ -96,7 +96,33 @@ public class JDBCVoterDao implements VoterDao {
 
     @Override
     public Voter getById(long id) {
-        return null;
+        String sql = "SELECT id, name, nif, email, password, pollingstationcode FROM Users WHERE id = ?";
+        try {
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setLong(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (!resultSet.next())
+                return null;
+
+            Voter voter = new Voter(
+                    resultSet.getLong("id"),
+                    resultSet.getString("nif"),
+                    resultSet.getString("name"),
+                    resultSet.getString("email"),
+                    "",
+                    resultSet.getString("pollingstationcode"));
+
+            voter.setHashedPassword(resultSet.getString("password"));
+
+            resultSet.close();
+
+            return voter;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
